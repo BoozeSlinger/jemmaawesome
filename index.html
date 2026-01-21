@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Antigravity OS // Agency Dashboard</title>
+    
+    <!-- TAILWIND CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- ICONS -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- FONTS -->
+    <link href="https://fonts.googleapis.com/css2?family=Rye&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Alfa+Slab+One&family=Teko:wght@300;700&family=Bungee&family=Space+Grotesk:wght@300;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body { background-color: #000000; color: #e4e4e7; font-family: 'Inter', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+        
+        .scan-line {
+            position: absolute; top: 0; left: 0; width: 100%; height: 4px;
+            background: #10b981; box-shadow: 0 0 10px #10b981;
+            animation: scan 2s linear infinite; opacity: 0.5;
+        }
+        @keyframes scan {
+            0% { top: 0%; opacity: 0; }
+            100% { top: 100%; opacity: 0; }
+        }
+
+        /* NEON FX */
+        .neon-text-glow {
+            text-shadow: 0 0 5px currentColor, 0 0 10px currentColor;
+        }
+        
+        .neon-border-violet {
+            border-color: #8b5cf6;
+            box-shadow: 0 0 5px #8b5cf6, inset 0 0 5px #8b5cf6;
+        }
+        
+        .neon-border-emerald {
+            border-color: #10b981;
+            box-shadow: 0 0 5px #10b981, inset 0 0 5px #10b981;
+        }
+
+        .neon-border-gold {
+            border-color: #eab308;
+            box-shadow: 0 0 5px #eab308, inset 0 0 2px #eab308;
+        }
+        
+        /* Logo Fallback Logic */
+        .logo-fallback[style*="display: none"] + .logo-default {
+            display: flex !important;
+        }
+    </style>
+
+    <!-- LOGIC (Moved to Head for Stability) -->
+    <script>
+        function app() {
+            return {
+                mode: 'architect',
+                // Grimoire Logic
+                activeCat: 'all',
+                search: '',
+                categories: [
+                    { id: 'all', name: 'All Skills', icon: 'sparkles' },
+                    { id: 'sales', name: 'Agency Sales', icon: 'dollar-sign' },
+                    { id: 'frontend', name: 'Frontend', icon: 'layout' },
+                    { id: 'backend', name: 'Backend', icon: 'database' },
+                ],
+                skills: [
+                    {
+                        id: 'sl-1',
+                        category: 'sales',
+                        title: 'Retainer Pitch',
+                        description: 'Generates a 3-tier pricing table (Basic, Growth, Dominance).',
+                        command: 'Create a 3-tier retainer proposal. Tier 1: $395/mo (Maintenance + GBP). Tier 2: $1195/mo (Socials + Content). Tier 3: $2500/mo (Full Growth Partner). Emphasize ROI.'
+                    },
+                    {
+                        id: 'sl-2',
+                        category: 'sales',
+                        title: 'Vibe Audit',
+                        description: 'Roasts current branding to sell a new site.',
+                        command: 'Act as a brutal brand consultant. I will upload a photo of a bar. Tell me why their branding is costing them money and how a new "Vibe Check" website would fix it.'
+                    },
+                    {
+                        id: 'fe-1',
+                        category: 'frontend',
+                        title: 'Dive Bar Hero',
+                        description: 'The Sportsman style hero section.',
+                        command: 'Create a single-file HTML/Tailwind hero. Min-height 100dvh. Background image with dark overlay. Center a massive, thick font logo. Row of uppercase links below. Mobile responsive.'
+                    },
+                    {
+                        id: 'fe-2',
+                        category: 'frontend',
+                        title: 'Neon Menu List',
+                        description: 'Creates the "Liquid Diet" menu grid.',
+                        command: 'Create a Tailwind grid for a drink menu. Dark theme. 3 columns: "Domestics", "Imports", "Cocktails". High contrast text. Add funny subtext to each item.'
+                    },
+                    {
+                        id: 'db-1',
+                        category: 'backend',
+                        title: 'Mobile Squeeze Fix',
+                        description: 'Fixes Safari mobile height bug.',
+                        command: 'Refactor this CSS to use "min-h-[100dvh]" instead of "h-screen" to fix the mobile viewport bug on iOS.'
+                    }
+                ],
+                // Architect Logic
+                barName: 'THE SPORTSMAN',
+                tagline: 'EST. 1970 • COLD BEER',
+                bgImage: null,
+                isAnalyzing: false,
+                analysisStep: '',
+                currentVibe: { 
+                    id: 'dive', name: 'The Dive', icon: 'beer',
+                    headerFont: 'Alfa Slab One, cursive', subFont: 'Inter, sans-serif',
+                    gradientClass: 'from-amber-900/90 to-black', colors: '#000, #451a03', accent: '#f59e0b'
+                },
+                vibes: [
+                    { 
+                        id: 'dive', name: 'The Dive', icon: 'beer',
+                        headerFont: 'Alfa Slab One, cursive', subFont: 'Inter, sans-serif',
+                        gradientClass: 'from-amber-900/90 to-black', colors: '#000, #451a03', accent: '#f59e0b'
+                    },
+                    { 
+                        id: 'upscale', name: 'Speakeasy', icon: 'martini',
+                        headerFont: 'Playfair Display, serif', subFont: 'Cinzel, serif',
+                        gradientClass: 'from-slate-900/90 to-black', colors: '#000, #0f172a', accent: '#e2e8f0'
+                    },
+                    { 
+                        id: 'sports', name: 'Sports Bar', icon: 'trophy',
+                        headerFont: 'Teko, sans-serif', subFont: 'Space Grotesk, sans-serif',
+                        gradientClass: 'from-blue-900/90 to-black', colors: '#000, #172554', accent: '#60a5fa'
+                    },
+                    { 
+                        id: 'retro', name: 'Retrocade', icon: 'music',
+                        headerFont: 'Bungee, cursive', subFont: 'Righteous, cursive',
+                        gradientClass: 'from-purple-900/90 to-black', colors: '#000, #581c87', accent: '#e879f9'
+                    },
+                    { 
+                        id: 'western', name: 'Saloon', icon: 'hexagon',
+                        headerFont: 'Rye, serif', subFont: 'Inter, sans-serif',
+                        gradientClass: 'from-orange-900/90 to-black', colors: '#000, #431407', accent: '#fbbf24'
+                    }
+                ],
+
+                get filteredSkills() {
+                    return this.skills.filter(s => {
+                        const catMatch = this.activeCat === 'all' || s.category === this.activeCat;
+                        const textMatch = s.title.toLowerCase().includes(this.search.toLowerCase()) || 
+                                          s.description.toLowerCase().includes(this.search.toLowerCase());
+                        return catMatch && textMatch;
+                    });
+                },
+                
+                handleImage(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        this.bgImage = URL.createObjectURL(file);
+                        this.startAnalysis();
+                    }
+                },
+                
+                startAnalysis() {
+                    this.isAnalyzing = true;
+                    this.analysisStep = 'Scanning geometry...';
+                    setTimeout(() => this.analysisStep = 'Detecting lighting...', 800);
+                    setTimeout(() => this.analysisStep = 'Matching textures...', 1600);
+                    setTimeout(() => this.analysisStep = 'Selecting typography...', 2400);
+                    setTimeout(() => { this.isAnalyzing = false; }, 3000);
+                },
+
+                copyToClipboard(text) {
+                    const el = document.createElement('textarea');
+                    el.value = text;
+                    document.body.appendChild(el);
+                    el.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(el);
+                    alert('Prompt copied!');
+                }
+            }
+        }
+
+        function initIcons() {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+                // Re-run icons when state changes
+                setInterval(() => lucide.createIcons(), 500);
+            }
+        }
+    </script>
+    
+    <!-- ALPINE JS (The Logic Engine) - Deferred -->
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+</head>
+<body x-data="app()" x-init="initIcons()">
+
+    <!-- TOP BAR -->
+    <header class="h-16 border-b border-zinc-900 bg-black flex items-center justify-between px-6 z-50 fixed w-full top-0 shadow-[0_0_20px_rgba(0,0,0,0.8)]">
+        <div class="flex items-center gap-3 font-bold tracking-tight text-white group cursor-default">
+            
+            <!-- LOGO: Tries to load assets/logo.png. If fails, hides itself and shows the Zap icon below -->
+            <img 
+                src="assets/logo.png" 
+                onerror="this.style.display='none'"
+                class="logo-fallback h-10 w-10 object-contain rounded-lg neon-border-gold shadow-[0_0_10px_rgba(234,179,8,0.5)] bg-black"
+                alt="Antigravity Logo"
+            >
+            
+            <!-- FALLBACK ICON (Hidden by default, shown via CSS if img fails) -->
+            <div class="logo-default hidden p-2 border border-yellow-500 rounded neon-border-gold shadow-[0_0_10px_rgba(234,179,8,0.5)]">
+                <i data-lucide="zap" class="text-yellow-500 fill-yellow-500 w-5 h-5 neon-text-glow"></i>
+            </div>
+
+            <span class="text-xl tracking-widest neon-text-glow text-gray-200" style="text-shadow: 0 0 10px rgba(255,255,255,0.5)">ANTIGRAVITY <span class="text-zinc-600">OS</span></span>
+        </div>
+        <div class="flex gap-4 p-1">
+            <button @click="mode = 'grimoire'" 
+                :class="mode === 'grimoire' ? 'neon-border-violet text-violet-400 bg-black' : 'border border-zinc-800 text-zinc-600 hover:text-white hover:border-zinc-600'" 
+                class="px-6 py-2 rounded-lg text-xs font-bold uppercase tracking-[0.2em] transition-all border shadow-lg">
+                Grimoire
+            </button>
+            <button @click="mode = 'architect'" 
+                :class="mode === 'architect' ? 'neon-border-emerald text-emerald-400 bg-black' : 'border border-zinc-800 text-zinc-600 hover:text-white hover:border-zinc-600'" 
+                class="px-6 py-2 rounded-lg text-xs font-bold uppercase tracking-[0.2em] transition-all border shadow-lg">
+                Architect
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="pt-16 h-screen overflow-hidden bg-black">
+        
+        <!-- =======================
+             MODE 1: GRIMOIRE 
+        ======================== -->
+        <div x-show="mode === 'grimoire'" class="h-full flex flex-col md:flex-row overflow-hidden" x-transition.opacity>
+            <!-- Sidebar -->
+            <div class="w-full md:w-72 bg-black border-r border-violet-900/30 p-6 flex flex-col gap-3 shadow-[5px_0_30px_-10px_rgba(139,92,246,0.1)] z-10">
+                <div class="mb-8 px-2">
+                    <h2 class="text-2xl font-bold text-violet-500 flex items-center gap-3 neon-text-glow">
+                        <i data-lucide="bot" class="text-violet-500"></i> The Oracle
+                    </h2>
+                    <p class="text-[10px] text-violet-900/80 tracking-widest uppercase mt-1">Skill Database v3.0</p>
+                </div>
+                <template x-for="cat in categories" :key="cat.id">
+                    <button @click="activeCat = cat.id" :class="activeCat === cat.id ? 'neon-border-violet text-violet-300 bg-violet-900/10' : 'text-zinc-600 border border-transparent hover:text-violet-400 hover:border-violet-900/50'" class="w-full flex items-center gap-4 px-4 py-4 rounded-lg transition-all text-left group">
+                        <i :data-lucide="cat.icon" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                        <span class="font-bold text-xs uppercase tracking-widest" x-text="cat.name"></span>
+                    </button>
+                </template>
+            </div>
+
+            <!-- List -->
+            <div class="flex-1 flex flex-col bg-black overflow-hidden relative">
+                <!-- Grid Background -->
+                <div class="absolute inset-0 bg-[linear-gradient(rgba(20,0,40,0.2)_1px,transparent_1px),linear-gradient(90deg,rgba(20,0,40,0.2)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>
+
+                <div class="p-8 border-b border-violet-900/20 z-10">
+                    <input type="text" x-model="search" placeholder="SEARCH SPELLS..." class="w-full bg-black border border-violet-900/50 rounded-lg px-8 py-4 text-sm text-violet-200 placeholder-violet-900/50 focus:neon-border-violet outline-none font-mono tracking-wider transition-all">
+                </div>
+                <div class="flex-1 overflow-y-auto p-8 grid grid-cols-1 lg:grid-cols-2 gap-6 z-10">
+                    <template x-for="skill in filteredSkills" :key="skill.id">
+                        <div class="bg-black border border-zinc-900 rounded-xl p-6 hover:neon-border-violet transition-all group relative shadow-lg">
+                            <div class="flex justify-between items-start mb-4">
+                                <span class="text-[10px] uppercase tracking-widest font-black text-violet-500 border border-violet-900/50 px-3 py-1 rounded bg-black" x-text="skill.category"></span>
+                                <button @click="copyToClipboard(skill.command)" class="text-zinc-700 hover:text-violet-400 transition-colors">
+                                    <i data-lucide="copy" class="w-5 h-5"></i>
+                                </button>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-200 mb-2 group-hover:text-violet-300 transition-colors" x-text="skill.title"></h3>
+                            <p class="text-zinc-500 text-sm mb-6 leading-relaxed" x-text="skill.description"></p>
+                            <div class="bg-zinc-950 rounded p-4 font-mono text-xs text-violet-400 break-words border border-zinc-900 shadow-inner leading-relaxed" x-text="skill.command"></div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+
+        <!-- =======================
+             MODE 2: ARCHITECT 
+        ======================== -->
+        <div x-show="mode === 'architect'" class="h-full flex flex-col md:flex-row overflow-hidden bg-black" x-transition.opacity>
+            <!-- Controls -->
+            <div class="w-full md:w-80 bg-black border-r border-emerald-900/30 flex flex-col h-full overflow-y-auto z-10 shadow-[5px_0_30px_-10px_rgba(16,185,129,0.1)]">
+                <div class="p-8 border-b border-emerald-900/20">
+                    <h2 class="text-2xl font-bold text-emerald-500 flex items-center gap-3 neon-text-glow">
+                        <i data-lucide="briefcase" class="text-emerald-500"></i> Architect
+                    </h2>
+                    <p class="text-[10px] text-emerald-900/80 tracking-widest uppercase mt-1">Pitch Mode v2.0</p>
+                </div>
+                
+                <div class="p-8 space-y-10">
+                    <!-- 1. Scan -->
+                    <div class="space-y-4">
+                        <label class="text-[10px] font-black text-emerald-600 uppercase tracking-widest block mb-2">1. Input Data</label>
+                        <button @click="$refs.fileInput.click()" class="w-full py-8 border border-zinc-800 border-dashed hover:neon-border-emerald bg-zinc-950 hover:bg-black rounded-xl flex flex-col items-center justify-center gap-3 transition-all group">
+                            <i data-lucide="camera" class="text-zinc-600 group-hover:text-emerald-400 w-8 h-8 transition-colors"></i>
+                            <span class="text-[10px] text-zinc-500 group-hover:text-emerald-200 uppercase tracking-widest">Upload Photo</span>
+                        </button>
+                        <input type="file" x-ref="fileInput" @change="handleImage($event)" class="hidden" accept="image/*">
+                    </div>
+
+                    <!-- 2. Text -->
+                    <div class="space-y-4">
+                        <label class="text-[10px] font-black text-emerald-600 uppercase tracking-widest block mb-2">2. Identity</label>
+                        <input type="text" x-model="barName" class="w-full bg-black border border-zinc-800 rounded px-4 py-3 text-emerald-100 text-sm focus:neon-border-emerald outline-none transition-all placeholder-emerald-900/30 font-bold tracking-wide">
+                        <input type="text" x-model="tagline" class="w-full bg-black border border-zinc-800 rounded px-4 py-3 text-emerald-100 text-sm focus:neon-border-emerald outline-none transition-all placeholder-emerald-900/30 font-bold tracking-wide">
+                    </div>
+
+                    <!-- 3. Vibe -->
+                    <div class="space-y-3">
+                        <label class="text-[10px] font-black text-emerald-600 uppercase tracking-widest block mb-2">3. Style Matrix</label>
+                        <template x-for="v in vibes" :key="v.id">
+                            <button @click="currentVibe = v" :class="currentVibe.id === v.id ? 'neon-border-emerald text-emerald-300 bg-emerald-900/10' : 'border border-zinc-900 text-zinc-600 hover:text-emerald-400 hover:border-emerald-900/50'" class="w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 transition-all group">
+                                <i :data-lucide="v.icon" class="w-4 h-4 group-hover:scale-110 transition-transform"></i>
+                                <span class="text-xs font-bold uppercase tracking-wider" x-text="v.name"></span>
+                            </button>
+                        </template>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Canvas -->
+            <div class="flex-1 relative flex items-center justify-center bg-black overflow-hidden p-4">
+                <!-- Grid Background -->
+                <div class="absolute inset-0 bg-[linear-gradient(rgba(0,40,20,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(0,40,20,0.1)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>
+
+                <!-- BG Blur -->
+                <div class="absolute inset-0 bg-cover bg-center opacity-30 blur-xl transition-all duration-1000" :style="bgImage ? `background-image: url('${bgImage}')` : ''"></div>
+
+                <!-- AI Overlay -->
+                <div x-show="isAnalyzing" class="absolute inset-0 z-50 bg-black/90 flex flex-col items-center justify-center" x-transition>
+                    <div class="relative w-64 h-64 border border-emerald-500/50 rounded-lg overflow-hidden bg-black mb-6 neon-border-emerald">
+                        <div class="scan-line"></div>
+                        <img x-show="bgImage" :src="bgImage" class="w-full h-full object-cover opacity-60">
+                    </div>
+                    <div class="flex items-center gap-3 text-emerald-400 font-mono text-xs tracking-[0.2em] animate-pulse">
+                        <i data-lucide="loader-2" class="animate-spin w-4 h-4"></i>
+                        <span x-text="analysisStep"></span>
+                    </div>
+                </div>
+
+                <!-- Phone Mockup -->
+                <div class="relative w-[360px] h-[720px] bg-black rounded-[3rem] border-[6px] border-zinc-900 shadow-[0_0_50px_-10px_rgba(16,185,129,0.2)] overflow-hidden transition-all duration-700 neon-border-emerald" :class="isAnalyzing ? 'scale-90 opacity-0' : 'scale-100 opacity-100'">
+                    <div class="relative h-full flex flex-col text-center">
+                        <div class="absolute inset-0 z-0">
+                            <div class="w-full h-full bg-cover bg-center" :style="bgImage ? `background-image: url('${bgImage}')` : `background-image: linear-gradient(to bottom right, ${currentVibe.colors})`"></div>
+                            <div class="absolute inset-0 bg-gradient-to-b opacity-90" :class="currentVibe.gradientClass"></div>
+                        </div>
+
+                        <div class="relative z-10 flex flex-col h-full p-6 pt-16">
+                            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-black rounded-b-xl z-20"></div>
+                            <div class="flex-1 flex flex-col justify-center">
+                                <div class="border-[3px] border-white/20 p-5 bg-black/30 backdrop-blur-md mb-6 inline-block mx-auto shadow-2xl">
+                                    <h1 class="text-5xl leading-none text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)]" :style="`font-family: ${currentVibe.headerFont}; color: ${currentVibe.accent}`" x-text="barName"></h1>
+                                </div>
+                                <p class="text-white/90 font-bold tracking-[0.2em] uppercase text-[10px] bg-black/60 py-3 backdrop-blur-sm neon-border-emerald border-0 border-t border-b border-emerald-500/30" :style="`font-family: ${currentVibe.subFont}`" x-text="tagline"></p>
+                            </div>
+                            <div class="mt-auto space-y-4 mb-8">
+                                <button class="w-full py-4 bg-white text-black font-black uppercase tracking-widest text-sm rounded hover:bg-zinc-200 transition-colors shadow-xl" :style="`font-family: ${currentVibe.subFont}`">View Menu</button>
+                                <div class="grid grid-cols-3 gap-2 text-white/60 text-[8px] uppercase font-bold tracking-widest">
+                                    <div class="bg-black/40 p-3 rounded backdrop-blur border border-white/5">Drinks</div>
+                                    <div class="bg-black/40 p-3 rounded backdrop-blur border border-white/5">Events</div>
+                                    <div class="bg-black/40 p-3 rounded backdrop-blur border border-white/5">Info</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+</body>
+</html>
